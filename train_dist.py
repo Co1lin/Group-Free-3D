@@ -474,9 +474,11 @@ if __name__ == '__main__':
     opt = parse_option()
     torch.cuda.set_device(opt.local_rank)
     torch.distributed.init_process_group(backend='nccl', init_method='env://')
+    # enable cudnn optimization
     torch.backends.cudnn.enabled = True
     torch.backends.cudnn.benchmark = True
-    torch.backends.cudnn.deterministic = True
+    # fix the algorithm for convolution
+    # torch.backends.cudnn.deterministic = True
 
     LOG_DIR = os.path.join(opt.log_dir, 'group_free',
                            f'{opt.dataset}_{int(time.time())}', f'{np.random.randint(100000000)}')
